@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sewa African Store</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="store-topbar">
+    <div class="store-topbar-inner">
+      <div class="store-brand">
+        <h1>Sewa African Store</h1>
+        <p>African groceries delivered to your door</p>
+      </div>
+
+      <div class="store-top-actions">
+        <a class="header-link-btn" href="https://wa.me/" target="_blank" rel="noopener noreferrer">
+          WhatsApp Us
+        </a>
+
+        <button type="button" class="cart-pill" id="cartToggleBtn">
+          Cart (<span id="cartCount">0</span>)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h2>Shop African Foods, Spices, Drinks, and More</h2>
+      <p>
+        Fresh African products from Sewa African Store. Easy ordering, fast checkout,
+        and convenient delivery.
+      </p>
+    </div>
+
+    <div class="trust-strip">
+      <div class="trust-item">Fresh African groceries</div>
+      <div class="trust-item">Pickup and delivery available</div>
+      <div class="trust-item">Secure online payment</div>
+      <div class="trust-item">Friendly local service</div>
+    </div>
+  </section>
+
+  <main class="store-shell">
+    <section class="toolbar-card">
+      <div class="search-wrap">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search products..."
+        />
+      </div>
+
+      <div class="category-row" id="categoryFilters">
+        <button type="button" class="category-btn active" data-category="all">All</button>
+        <button type="button" class="category-btn" data-category="Rice">Rice</button>
+        <button type="button" class="category-btn" data-category="Beans">Beans</button>
+      </div>
+    </section>
+
+    <div class="store-grid">
+      <section class="products-area">
+        <h3 class="section-title">Products</h3>
+        <p class="section-subtitle">
+          Browse our latest items below and add your favorites to cart.
+        </p>
+
+        <div id="productsSection">
+          <div class="category-block">
+            <h4 class="category-heading">Products</h4>
+            <div class="products-grid" id="productsGrid">
+              <!-- Products load here -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Your Cart</h3>
+
+          <p class="muted-text" id="cartEmptyMessage">
+            Add products to your cart to begin checkout.
+          </p>
+
+          <div class="cart-items" id="cartItems"></div>
+
+          <div class="cart-row">
+            <span>Subtotal</span>
+            <strong id="subtotal">$0.00</strong>
+          </div>
+
+          <div class="cart-row">
+            <span>Delivery Fee</span>
+            <strong id="deliveryFee">$0.00</strong>
+          </div>
+
+          <div class="cart-row cart-total">
+            <span>Total</span>
+            <strong id="total">$0.00</strong>
+          </div>
+        </div>
+
+        <div class="sidebar-card" id="checkoutSection">
+          <h3 class="checkout-title">Checkout</h3>
+
+          <p class="checkout-note">
+            Free delivery on qualifying orders where applicable. Please enter your details carefully before placing your order.
+          </p>
+
+          <input type="text" id="customerName" class="field" placeholder="Full Name" autocomplete="name" />
+          <input type="tel" id="customerPhone" class="field" placeholder="Phone Number" autocomplete="tel" />
+          <input type="text" id="customerAddress" class="field" placeholder="Delivery Address" autocomplete="street-address" />
+          <input type="text" id="customerProvince" class="field" placeholder="Province / Area" autocomplete="address-level1" value="Nova Scotia" />
+
+          <select id="deliveryMethod" class="field">
+            <option value="pickup">Pickup</option>
+            <option value="delivery">Delivery</option>
+          </select>
+
+          <select id="paymentMethod" class="field">
+            <option value="">Select Payment Method</option>
+            <option value="card_online">Credit / Debit Card Online</option>
+          </select>
+
+          <textarea id="orderNotes" class="field" placeholder="Order notes (optional)"></textarea>
+
+          <button type="button" id="placeOrderBtn" class="place-order-btn">
+            Place Order
+          </button>
+
+          <p class="tiny-tip">
+            Tip: your browser may remember your name, phone, and address automatically after you use it.
+          </p>
+        </div>
+      </aside>
+    </div>
+
+    <p class="footer-note">
+      Thank you for shopping with Sewa African Store.
+    </p>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

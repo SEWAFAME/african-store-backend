@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>African Store Manager</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2f7d32" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1>African Store Manager</h1>
+      <p class="subtitle">
+        Customer loyalty, sales tracking, profit tracking, rewards, staff control, and inventory management
+      </p>
+
+      <div class="top-controls">
+        <div id="roleBadge" class="role-badge">Mode: Staff</div>
+        <div class="button-group">
+          <button class="primary-btn" onclick="showLogin()">Admin Login</button>
+          <button class="primary-btn" onclick="logoutAdmin()">Staff Mode</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Add Customer -->
+    <section class="card">
+      <h2>Add Customer</h2>
+      <div class="form-grid">
+        <input type="text" id="name" placeholder="Customer Name" />
+        <input type="text" id="phone" placeholder="Phone Number" />
+        <input type="number" id="points" placeholder="Starting Points" />
+      </div>
+      <button class="primary-btn" onclick="addCustomer()">Add Customer</button>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="card">
+      <div class="dashboard-header">
+        <h2>Dashboard</h2>
+        <button class="primary-btn" onclick="loadDashboard()">Refresh Dashboard</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <span>Total Sales</span>
+          <strong id="totalSales">$0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Today's Sales</span>
+          <strong id="todaySales">$0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Transactions</span>
+          <strong id="totalTransactions">0</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Total Profit</span>
+          <strong id="totalProfit">$0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Today's Profit</span>
+          <strong id="todayProfit">$0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Average Sale</span>
+          <strong id="averageSale">$0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Top Customer</span>
+          <strong id="topCustomer">None</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Top Customer Spend</span>
+          <strong id="topCustomerSpend">$0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Customers</span>
+          <strong id="customerCount">0</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Best Sales Day</span>
+          <strong id="bestSalesDay">None</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Best Sales Day Amount</span>
+          <strong id="bestSalesDayAmount">$0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Repeat Customers</span>
+          <strong id="repeatCustomers">0</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Products</span>
+          <strong id="productCount">0</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>Low Stock Items</span>
+          <strong id="lowStockCount">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Last 7 Days Sales -->
+    <section class="card">
+      <h2>Last 7 Days Sales</h2>
+      <div id="salesChart" class="sales-chart"></div>
+    </section>
+
+    <!-- Recent Sales -->
+    <section class="card">
+      <h2>Recent Sales</h2>
+      <div id="recentSalesList" class="sales-list">
+        <p class="empty-state">No sales yet.</p>
+      </div>
+    </section>
+
+    <!-- Top 5 Customers -->
+    <section class="card">
+      <h2>Top 5 Customers</h2>
+      <div id="topCustomersList" class="sales-list">
+        <p class="empty-state">No data yet.</p>
+      </div>
+    </section>
+
+    <!-- Low Stock Alerts -->
+    <section class="card low-stock-card">
+      <h2>Low Stock Alerts</h2>
+      <p class="helper-text">
+        Products at or below the low-stock level will appear here.
+      </p>
+      <div id="lowStockList" class="sales-list">
+        <p>No low stock items.</p>
+      </div>
+    </section>
+
+    <!-- Add Product -->
+    <section class="card admin-only hidden-admin" id="productFormSection">
+      <h2>Add Product</h2>
+      <div class="form-grid">
+        <input type="text" id="productName" placeholder="Product Name" />
+        <input type="text" id="productCategory" placeholder="Category (Rice, Beans, Drinks)" />
+        <input type="number" step="0.01" id="productPrice" placeholder="Selling Price" />
+        <input type="number" step="0.01" id="productCost" placeholder="Cost Price" />
+        <input type="number" id="productStock" placeholder="Stock Quantity" />
+        <input type="number" id="productLowStock" placeholder="Low Stock Alert Level" />
+      </div>
+
+      <div class="file-input-wrap">
+        <input type="file" id="productImage" accept="image/*" />
+      </div>
+
+      <button class="primary-btn" onclick="addProduct(event)">Add Product</button>
+    </section>
+
+    <!-- Products -->
+    <section class="card">
+      <div class="dashboard-header">
+        <h2>Products</h2>
+        <button class="primary-btn" onclick="loadProducts()">Refresh Products</button>
+      </div>
+
+      <p class="helper-text">
+        Sell products directly from here. Stock will reduce automatically and customer sales will update.
+      </p>
+
+      <div id="productList" class="product-list">
+        <p class="empty-state">No products yet.</p>
+      </div>
+    </section>
+
+    <!-- Customer List -->
+    <section class="card">
+      <h2>Customer List</h2>
+      <p class="helper-text">
+        Use buttons to manage loyalty, purchases, rewards, and messaging
+      </p>
+      <div id="customerList" class="customer-list"></div>
+    </section>
+
+    <!-- Online Orders -->
+    <section class="card orders-card">
+      <div class="dashboard-header">
+        <h2>Online Orders</h2>
+        <button class="primary-btn" onclick="refreshOrder()">Refresh Orders</button>
+      </div>
+
+      <p class="helper-text">
+        Review customer online orders here. Stock will reduce only when you mark an order as completed.
+      </p>
+<div class="order-filter-row">
+ <button onclick="setOnlineOrderFilter('all')">All</button>
+ <button onclick="setOnlineOrderFilter('paid')">Paid</button>
+ <button onclick="setOnlineOrderFilter('unpaid')">Unpaid</button>
+ <button onclick="setOnlineOrderFilter('awaiting_payment')">Awaiting Payment</button>
+ <button onclick="setOnlineOrderFilter('confirmed')">Confirmed</button>
+ <button onclick="setOnlineOrderFilter('completed')">Completed</button>
+ <button onclick="setOnlineOrderFilter('cancelled')">Cancelled</button>
+</div>
+      <div id="ordersList" class="orders-list">
+        <p class="empty-state">No orders yet.</p>
+      </div>
+    </section>
+
+    <!-- Backup / Export -->
+    <section class="card admin-only hidden-admin" id="backupSection">
+      <h2>Backup / Export</h2>
+      <p class="helper-text">
+        Admin only: download your customer, sales, and product data as CSV files.
+      </p>
+      <div class="button-group">
+        <button class="primary-btn" onclick="exportData()">Export Customer CSV</button>
+        <button class="primary-btn" onclick="exportProducts()">Export Product CSV</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div id="loginModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Admin Login</h2>
+      <p class="helper-text">Enter admin PIN</p>
+      <input type="password" id="adminPinInput" placeholder="Enter PIN" />
+      <div class="button-group modal-buttons">
+        <button class="primary-btn" onclick="loginAdmin()">Login</button>
+        <button class="secondary-btn" onclick="hideLogin()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sell Product Modal -->
+  <div id="sellProductModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Sell Product</h2>
+      <p id="sellProductName" class="helper-text">Product details</p>
+
+      <select id="sellCustomerSelect">
+        <option value="">Select Customer</option>
+      </select>
+
+      <input type="number" id="sellQuantityInput" placeholder="Enter Quantity" min="1" />
+
+      <div class="button-group modal-buttons">
+        <button class="primary-btn" onclick="confirmSellProduct()">Complete Sale</button>
+        <button class="secondary-btn" onclick="hideSellProductModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

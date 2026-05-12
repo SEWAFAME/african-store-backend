@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Successful</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h2 {
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      background: #e6f4ea;
+      color: #2e7d32;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #256628;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h2>Payment Successful</h2>
+    <p>Your payment was completed successfully.</p>
+
+    <div class="message" id="statusBox">
+      Verifying payment and updating your order...
+    </div>
+
+    <button onclick="goBack()">Back to Store</button>
+  </div>
+
+  <script>
+    const BACKEND_URL = "https://african-store-api.onrender.com";
+
+    localStorage.removeItem("sewaOnlineCart");
+
+    function goBack() {
+      localStorage.removeItem("sewaOnlineCart");
+      window.location.href = "/online-store/index.html";
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get("session_id");
+    const orderId = urlParams.get("orderId");
+    const statusBox = document.getElementById("statusBox");
+
+    if (sessionId && orderId) {
+      fetch(`${BACKEND_URL}/confirm-payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ sessionId, orderId })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            localStorage.removeItem("sewaOnlineCart");
+            statusBox.textContent = "Payment verified and order updated successfully.";
+            statusBox.style.background = "#e6f4ea";
+            statusBox.style.color = "#2e7d32";
+          } else {
+            statusBox.textContent = data.error || "Payment was successful, but order verification failed.";
+            statusBox.style.background = "#fde2e2";
+            statusBox.style.color = "#8a1f1f";
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          statusBox.textContent = "Payment was successful, but order verification failed. Please check admin orders.";
+          statusBox.style.background = "#fde2e2";
+          statusBox.style.color = "#8a1f1f";
+        });
+    } else {
+      statusBox.textContent = "Missing payment details.";
+      statusBox.style.background = "#fde2e2";
+      statusBox.style.color = "#8a1f1f";
+    }
+  </script>
+</body>
+</html>
